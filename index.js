@@ -1,8 +1,4 @@
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-
-
-const loader = new GLTFLoader();
+const gltfLoader = new THREE.GLTFLoader();
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -17,7 +13,7 @@ const cube = new THREE.Mesh( geometry, material );
 cube.receiveShadow = true;
 
 let gyroModel;
-loader.load( 'gyro.glb', function ( gltf ) {
+gltfLoader.load( 'gyro.glb', function ( gltf ) {
 	gyroModel = gltf;
 	scene.add( gltf.scene );
 }, undefined, function ( error ) {
@@ -26,15 +22,15 @@ loader.load( 'gyro.glb', function ( gltf ) {
 
 //scene.add( cube );
 
-const light = new THREE.PointLight( 0xffffff, 1000, 100 );
-light.position.set( 10, 0, 10 ); //default; light shining from top
+const light = new THREE.PointLight( 0xffffff, 6, 100 );
+light.position.set( 10, 5, 10 ); //default; light shining from top
 light.castShadow = true; // default false
 scene.add( light );
 
 
 //Create a DirectionalLight and turn on shadows for the light
-const light2 = new THREE.PointLight( 0xffffff, 300, 100 );
-light2.position.set( -10, 0, 10 ); //default; light shining from top
+const light2 = new THREE.PointLight( 0xffffff, 3, 100 );
+light2.position.set( -10, -5, 10 ); //default; light shining from top
 light2.castShadow = true; // default false
 scene.add( light2 );
 
@@ -46,7 +42,7 @@ light.shadow.camera.near = 0.5; // default
 light.shadow.camera.far = 500; // default
 
 
-camera.position.z = 10;
+camera.position.z = 12;
 
 
 document.body.addEventListener("keydown", (e) => {
@@ -59,7 +55,23 @@ document.body.addEventListener("keydown", (e) => {
 	 if(e.key == 'a')
 	 gyroModel.scene.rotation.z += 0.1;
 	
+	 
 });
+
+const socket = io();
+
+const dtr = 3.14159 / 180;
+socket.on('sendData', (data) => {
+	if(gyroModel){
+		gyroModel.scene.rotation.x = data.roll * dtr;
+		gyroModel.scene.rotation.z = -data.pitch * dtr;
+	}
+});
+
+
+
+//let gPitch = 0, gRoll = 0;
+
 
 function animate() {
 	requestAnimationFrame( animate );

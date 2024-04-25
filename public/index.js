@@ -4,7 +4,7 @@ const gltfLoader = new THREE.GLTFLoader();
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-camera.position.z = 10;
+camera.position.z = 12;
 
 
 const renderer = new THREE.WebGLRenderer();
@@ -36,8 +36,8 @@ scene.add( light2 );
 const dtr = 3.14159 / 180;
 socket.on('sendData', (data) => {
 	if(gyroModel){
-		gyroModel.scene.rotation.x = -data.roll * dtr;
-		gyroModel.scene.rotation.z = data.pitch * dtr;
+		gyroModel.scene.rotation.x = data.roll * dtr;
+		gyroModel.scene.rotation.z = -data.pitch * dtr;
 	}
 });
 

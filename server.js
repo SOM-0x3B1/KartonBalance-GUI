@@ -29,7 +29,7 @@ server.listen(80, () => { });
 
 
 const port = new SerialPort({
-    path: 'COM4',
+    path: 'COM6',
     baudRate: 57600,
 });
 
@@ -39,8 +39,8 @@ const parser = port.pipe(new ReadlineParser({ delimiter: '\r' }))
 let gPitch, gRoll;
 parser.on('data', function (data) {
     const line = data.toString().split(' ');
-    gPitch = parseInt(line[0]) / 10;
-    gRoll = parseInt(line[1]) / 10;
+    gPitch = parseInt(line[0]) / 100;
+    gRoll = parseInt(line[1]) / 100;
 });
 
 

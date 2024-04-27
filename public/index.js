@@ -36,6 +36,7 @@ scene.add( light2 );
 const dtr = 3.14159 / 180;
 socket.on('sendData', (data) => {
 	if(gyroModel){
+		//console.log(data);
 		gyroModel.scene.rotation.x = data.roll * dtr;
 		gyroModel.scene.rotation.z = -data.pitch * dtr;
 	}

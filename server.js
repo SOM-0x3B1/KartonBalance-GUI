@@ -49,7 +49,7 @@ const io = new Server(server);
 io.on('connection', (socket) => {
     const x = setInterval(() => {
         socket.emit('sendData', { pitch: gPitch, roll: gRoll });
-    }, 50);
+    }, 16);
 
     socket.on('disconnect', () => {
         clearInterval(x);

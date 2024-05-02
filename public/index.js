@@ -1,5 +1,3 @@
-const { round } = require("three/examples/jsm/nodes/Nodes.js");
-
 const socket = io();
 
 const gltfLoader = new THREE.GLTFLoader();

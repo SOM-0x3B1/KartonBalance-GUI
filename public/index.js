@@ -1,3 +1,5 @@
+const { round } = require("three/examples/jsm/nodes/Nodes.js");
+
 const socket = io();
 
 const gltfLoader = new THREE.GLTFLoader();
@@ -32,14 +34,17 @@ light2.castShadow = true;
 scene.add( light2 );
 
 
-
+const stats = document.getElementById('stats');
 const dtr = 3.14159 / 180;
 socket.on('sendData', (data) => {
+	let pitch = data.p * dtr;
+	let roll = -data.r * dtr;
 	if(gyroModel){
 		//console.log(data);
-		gyroModel.scene.rotation.x = data.roll * dtr;
-		gyroModel.scene.rotation.z = -data.pitch * dtr;
+		gyroModel.scene.rotation.x = pitch;
+		gyroModel.scene.rotation.z = roll;
 	}
+	stats.innerText = `Roll: ${Math.round(roll)}° \nPitch: ${Math.round(pitch)}° \nSpeed left: ${data.sr} \nSpeed right: ${data.sr}`;	
 });
 
 

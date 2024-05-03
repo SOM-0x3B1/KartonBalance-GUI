@@ -36,13 +36,13 @@ const stats = document.getElementById('stats');
 const dtr = 3.14159 / 180;
 socket.on('sendData', (data) => {
 	let pitch = data.p * dtr;
-	let roll = -data.r * dtr;
+	let roll = data.r * dtr;
 	if(gyroModel){
 		//console.log(data);
 		gyroModel.scene.rotation.x = pitch;
 		gyroModel.scene.rotation.z = roll;
 	}
-	stats.innerText = `Roll: ${Math.round(roll)}° \nPitch: ${Math.round(pitch)}° \nSpeed left: ${data.sr} \nSpeed right: ${data.sr}`;	
+	stats.innerText = `Roll: ${data.r}° \nPitch: ${data.p}° \nSpeed left: ${data.sr} \nSpeed right: ${data.sr}`;	
 });
 
 

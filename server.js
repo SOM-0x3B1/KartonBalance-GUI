@@ -29,7 +29,7 @@ server.listen(80, () => { });
 
 
 const port = new SerialPort({
-    path: 'COM4',
+    path: 'COM6',
     baudRate: 57600,
 });
 

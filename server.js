@@ -30,10 +30,22 @@ server.listen(80, () => { });
 
 const port = new SerialPort({
     path: 'COM6',
-    baudRate: 57600,
+    baudRate: 115200,
+    dataBits: 8,
+    stopBits: 1,
+    parity: "none",
 });
 
-const parser = port.pipe(new ReadlineParser({ delimiter: '\n' }))
+const parser = port.pipe(new ReadlineParser({ delimiter: '\n\r' }))
+
+
+/*const getGyroInterval = setInterval(() => {
+    port.write('RG\r');
+}, 100);
+
+const getMotorInterval = setInterval(() => {
+    port.write('RM\r');
+}, 202);*/
 
 
 let gPitch, gRoll;
@@ -59,7 +71,31 @@ const io = new Server(server);
 io.on('connection', (socket) => {
     const x = setInterval(() => {
         socket.emit('sendData', { p: gPitch, r: gRoll, sl: speedL, sr: speedR });
-    }, 16);
+    }, 32);
+
+    socket.on('setP', (data) => { 
+        const value = data * 100;
+        console.log(value);
+        port.write('SP ' + value + '\r');
+    })
+    socket.on('setI', (data) => { port.write('SI ' + data * 100 + '\r'); })
+    socket.on('setD', (data) => { port.write('SD ' + data * 100 + '\r'); })
+    socket.on('setA', (data) => { 
+        const value = Math.round(data);
+        console.log(value);
+        port.write('SA ' + value + '\r'); 
+    })
+
+    socket.on('setEG', (data) => { 
+        const value = data;
+        console.log('Gyro: ' + value);
+        port.write(`EG${value}\r`, 'ascii'); 
+    })
+    socket.on('setEM', (data) => { 
+        const value = data;
+        console.log('Motor: ' + value);
+        port.write(`EM${value}\r`, 'ascii');
+    })
 
     socket.on('disconnect', () => {
         clearInterval(x);

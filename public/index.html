@@ -6,8 +6,39 @@
 	<title>My first three.js app</title>
 
 	<link rel="stylesheet" href="style.css">
+</head>
 
+<body>
 	<div id="stats"></div>
+
+	<div id="settings">
+		<div class="slidecontainer">
+			<span>P</span>
+			<input type="range" min="0" max="255" value="80" class="slider" id="sliderP">
+			<span class="value" id="valueP">80</span>
+		</div>
+		<div class="slidecontainer">
+			<span>I</span>
+			<input type="range" min="0" max="255" value="0" class="slider" id="sliderI">
+			<span class="value" id="valueI">0</span>
+		</div>
+		<div class="slidecontainer">
+			<span>D</span>
+			<input type="range" min="0" max="255" value="0" class="slider" id="sliderD">
+			<span class="value" id="valueD">0</span>
+		</div>
+		<div class="slidecontainer">
+			<span>A</span>
+			<input type="range" min="-120" max="120" value="0" class="slider" id="sliderA">
+			<span class="value" id="valueA">0</span>
+		</div>
+
+		<div id="buttonContainer">
+			<button class="button" id="toggleGyro">Gyro</button>
+			<button class="button" id="toggleMotor">Motor</button>
+		</div>
+	</div>
+
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.min.js"
 		integrity="sha512-n8IpKWzDnBOcBhRlHirMZOUvEq2bLRMuJGjuVqbzUJwtTsgwOgK5aS0c1JA647XWYfqvXve8k3PtZdzpipFjgg=="
@@ -16,10 +47,9 @@
 
 	<script src = "/socket.io/socket.io.js"></script>
 
-</head>
-
-<body>
 	<script type="text/javascript" src="/index.js"></script>
+
+	<script type="text/javascript" src="/settings.js"></script>
 </body>
 
 </html>

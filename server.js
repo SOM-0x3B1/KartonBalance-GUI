@@ -36,6 +36,14 @@ const port = new SerialPort({
     parity: "none",
 });
 
+/*const port = new SerialPort({
+    path: 'COM3',
+    baudRate: 38400,
+    dataBits: 8,
+    stopBits: 1,
+    parity: "none",
+});*/
+
 const parser = port.pipe(new ReadlineParser({ delimiter: '\n\r' }))
 
 
@@ -71,30 +79,56 @@ const io = new Server(server);
 io.on('connection', (socket) => {
     const x = setInterval(() => {
         socket.emit('sendData', { p: gPitch, r: gRoll, sl: speedL, sr: speedR });
-    }, 32);
+    }, 16);
 
     socket.on('setP', (data) => { 
-        const value = data * 100;
-        console.log(value);
-        port.write('SP ' + value + '\r');
+        port.write(`SP${data}\r`, (err) => {
+            if(err)
+                console.log("write error");
+        }); 
+        port.drain();
     })
-    socket.on('setI', (data) => { port.write('SI ' + data * 100 + '\r'); })
-    socket.on('setD', (data) => { port.write('SD ' + data * 100 + '\r'); })
+    socket.on('setI', (data) => { 
+        port.write(`SI${data}\r`, (err) => {
+            if(err)
+                console.log("write error");
+        }); 
+        port.drain();
+    })
+    socket.on('setD', (data) => { 
+        port.write(`SD${data}\r`, (err) => {
+            if(err)
+                console.log("write error");
+        }); 
+        port.drain();
+    })
     socket.on('setA', (data) => { 
         const value = Math.round(data);
-        console.log(value);
-        port.write('SA ' + value + '\r'); 
+        //console.log(value);
+        port.write(`SA${value}\r`, (err) => {
+            if(err)
+                console.log("write error");
+        }); 
+        port.drain();
     })
 
     socket.on('setEG', (data) => { 
         const value = data;
         console.log('Gyro: ' + value);
-        port.write(`EG${value}\r`, 'ascii'); 
+        port.write(`EG${value}\r`, (err) => {
+            if(err)
+                console.log("write error");
+        }); 
+        port.drain();
     })
     socket.on('setEM', (data) => { 
         const value = data;
         console.log('Motor: ' + value);
-        port.write(`EM${value}\r`, 'ascii');
+        port.write(`EM${value}\r`, (err) => {
+            if(err)
+                console.log("write error");
+        }); 
+        port.drain();
     })
 
     socket.on('disconnect', () => {

@@ -1,5 +1,5 @@
-var gyroEnabled = false;
-var motorEnabled = false;
+var gyroEnabled = true;
+var motorEnabled = true;
 
 const gyroButton = document.getElementById("toggleGyro");
 const motorButton = document.getElementById("toggleMotor");
@@ -36,18 +36,29 @@ const valueA = document.getElementById("valueA");
 
 
 sliderP.oninput = function() {
-    valueP.innerHTML = this.value;
-    socket.emit("setP", this.value);
+    valueP.innerHTML = this.value;    
 }
 sliderI.oninput = function() {
-    valueI.innerHTML = this.value;
-    socket.emit("setI", this.value);
+    valueI.innerHTML = this.value / 100;   
 }
 sliderD.oninput = function() {
-    valueD.innerHTML = this.value;
-    socket.emit("setD", this.value);
+    valueD.innerHTML = this.value;    
 }
 sliderA.oninput = function() {
-    valueA.innerHTML = this.value / 10;
-    socket.emit("setA", this.value);
+    valueA.innerHTML = this.value / 10;    
+}
+
+const getGyroInterval = setInterval(async () => {
+    socket.emit("setP", sliderP.value);
+    await sleep(20);
+    socket.emit("setI", sliderI.value);
+    await sleep(20);
+    socket.emit("setD", sliderD.value);
+    await sleep(20);
+    socket.emit("setA", sliderA.value);
+}, 120);
+
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }

@@ -1,10 +1,14 @@
+const dtr = 3.14159 / 180;
+
+
 const socket = io();
 
 const gltfLoader = new THREE.GLTFLoader();
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-camera.position.z = 8;
+camera.position.x = -8;
+camera.rotation.y = -90 * dtr;
 
 
 const renderer = new THREE.WebGLRenderer();
@@ -22,7 +26,7 @@ gltfLoader.load( 'gyro.glb', function ( gltf ) {
 
 
 const light = new THREE.PointLight( 0xffffff, 6, 100 );
-light.position.set( 10, 5, 10 ); 
+light.position.set( -10, 5, 10 ); 
 light.castShadow = true;
 scene.add( light );
 
@@ -33,7 +37,6 @@ scene.add( light2 );
 
 
 const stats = document.getElementById('stats');
-const dtr = 3.14159 / 180;
 socket.on('sendData', (data) => {
 	let pitch = data.p * dtr;
 	let roll = data.r * dtr;

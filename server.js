@@ -53,15 +53,6 @@ if (process.argv[2] == "USB") {
 const parser = port.pipe(new ReadlineParser({ delimiter: '\n\r' }))
 
 
-/*const getGyroInterval = setInterval(() => {
-    port.write('RG\r');
-}, 100);
-
-const getMotorInterval = setInterval(() => {
-    port.write('RM\r');
-}, 202);*/
-
-
 let gPitch, gRoll;
 let speedL, speedR;
 parser.on('data', (data) => {

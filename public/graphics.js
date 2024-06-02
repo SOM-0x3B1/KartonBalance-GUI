@@ -1,14 +1,13 @@
 const dtr = 3.14159 / 180;
 
 
-const socket = io();
-
 const gltfLoader = new THREE.GLTFLoader();
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 camera.position.x = -8;
 camera.rotation.y = -90 * dtr;
+camera.position.y = 2;
 
 
 const renderer = new THREE.WebGLRenderer();
@@ -35,18 +34,6 @@ light2.position.set( -10, -5, 10 );
 light2.castShadow = true;
 scene.add( light2 );
 
-
-const stats = document.getElementById('stats');
-socket.on('sendData', (data) => {
-	let pitch = data.p * dtr;
-	let roll = data.r * dtr;
-	if(gyroModel){
-		//console.log(data);
-		gyroModel.scene.rotation.x = pitch;
-		gyroModel.scene.rotation.z = roll;
-	}
-	stats.innerText = `Roll:\t${data.r}° \nPitch:\t${data.p}° \nSpeed left:\t${data.sr} m/s \nSpeed right:\t${data.sr} m/s`;	
-});
 
 
 function animate() {

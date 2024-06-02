@@ -6,6 +6,11 @@
 	<title>KartonBalance-GUI</title>
 
 	<link rel="stylesheet" href="style.css">
+
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2"></script>
+	<script src="https://cdn.jsdelivr.net/npm/luxon@1.27.0"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@2.0.0"></script>
 </head>
 
 <body>
@@ -14,17 +19,17 @@
 	<div id="settings">
 		<div class="slidecontainer">
 			<span>P</span>
-			<input type="range" min="0" max="255" value="165" class="slider" id="sliderP">
+			<input type="range" min="0" max="1000" value="450" class="slider" id="sliderP">
 			<span class="value" id="valueP">165</span>
 		</div>
 		<div class="slidecontainer">
 			<span>I</span>
-			<input type="range" min="0" max="100" value="30" class="slider" id="sliderI">
-			<span class="value" id="valueI">0.3</span>
+			<input type="range" min="0" max="1000" value="300" class="slider" id="sliderI">
+			<span class="value" id="valueI">20</span>
 		</div>
 		<div class="slidecontainer">
 			<span>D</span>
-			<input type="range" min="0" max="255" value="140" class="slider" id="sliderD">
+			<input type="range" min="0" max="1000" value="90" class="slider" id="sliderD">
 			<span class="value" id="valueD">140</span>
 		</div>
 		<div class="slidecontainer">
@@ -39,17 +44,29 @@
 		</div>
 	</div>
 
+	<div id="gyroChartContainer">
+		<canvas id="gyroChart"></canvas>
+	</div>
+
+	<div id="PIDChartContainer">
+		<canvas id="PIDChart"></canvas>
+	</div>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.min.js"
 		integrity="sha512-n8IpKWzDnBOcBhRlHirMZOUvEq2bLRMuJGjuVqbzUJwtTsgwOgK5aS0c1JA647XWYfqvXve8k3PtZdzpipFjgg=="
 		crossorigin="anonymous"></script>
 	<script src="https://unpkg.com/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
 
+
+	<script	src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@2"></script>
+
+
 	<script src = "/socket.io/socket.io.js"></script>
 
 	<script type="text/javascript" src="/graphics.js"></script>
-
+	<script type="text/javascript" src="/comm.js"></script>
 	<script type="text/javascript" src="/settings.js"></script>
+	<script type="text/javascript" src="/chart.js"></script>
 </body>
 
 </html>

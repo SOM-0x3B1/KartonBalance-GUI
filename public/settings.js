@@ -39,7 +39,7 @@ sliderP.oninput = function() {
     valueP.innerHTML = this.value;    
 }
 sliderI.oninput = function() {
-    valueI.innerHTML = this.value / 100;   
+    valueI.innerHTML = this.value;   
 }
 sliderD.oninput = function() {
     valueD.innerHTML = this.value;    

@@ -55,28 +55,32 @@ const parser = port.pipe(new ReadlineParser({ delimiter: '\n\r' }))
 
 let gPitch, gRoll;
 let speedL, speedR;
-parser.on('data', (data) => {
-    const line = data.toString().split(' ');
-    console.log(line);
-    if (line[0] == 'GA') {
-        //console.log(line[1]);
-        gPitch = parseInt(line[1]) / 10;
-        gRoll = parseInt(line[2]) / 10;
-    }
-    else {
-        speedL = parseInt(line[1]) * 0.00392;
-        speedR = parseInt(line[2]) * 0.00392;
-    }
-    //console.log(`Roll: ${gRoll}° \nPitch: ${gPitch}° \nSpeed left: ${speedL} \nSpeed right: ${speedR}`);	
-});
-
+let P, I, D, PID;
 
 const io = new Server(server);
 
 io.on('connection', (socket) => {
-    const x = setInterval(() => {
-        socket.emit('sendData', { p: gPitch, r: gRoll, sl: speedL, sr: speedR });
-    }, 16);
+    parser.on('data', (data) => {
+        const line = data.toString().split(' ');
+        console.log(line);
+        if (line[0] == 'GA') {
+            //console.log(line[1]);
+            gPitch = parseInt(line[1]) / 100;
+            gRoll = parseInt(line[2]) / 100;
+        }
+        else if (line[0] == 'MS') {
+            speedL = parseInt(line[1]) * 0.00392;
+            speedR = parseInt(line[2]) * 0.00392;
+        }
+        else if (line[0] == 'PR') {
+            P = parseInt(line[1]) / 10;
+            I = parseInt(line[2]) / 10;
+            D = parseInt(line[3]) / 10;
+            PID = parseInt(line[4]) / 10;
+        }
+        //console.log(`Roll: ${gRoll}° \nPitch: ${gPitch}° \nSpeed left: ${speedL} \nSpeed right: ${speedR}`);	
+        socket.emit('sendData', { pitch: gPitch, roll: gRoll, sl: speedL, sr: speedR, P: P, I: I, D: D, PID: PID });
+    });
 
     socket.on('setP', (data) => {
         port.write(`SP${data}\r`, (err) => {
@@ -127,8 +131,13 @@ io.on('connection', (socket) => {
         });
         port.drain();
     })
-
-    socket.on('disconnect', () => {
-        clearInterval(x);
+    socket.on('setEP', (data) => {
+        const value = data;
+        console.log('PID: ' + value);
+        port.write(`EP${value}\r`, (err) => {
+            if (err)
+                console.log("write error");
+        });
+        port.drain();
     })
 });

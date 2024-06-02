@@ -1,15 +1,4 @@
-const xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
-const yValues = [55, 49, 44, 24, 15];
-const barColors = ["red", "green", "blue", "orange", "brown"];
-
-
-
-// Change default options for ALL charts
-Chart.defaults.set('plugins.streaming', {
-    duration: 20000
-});
-
-
+/// Setup gyroscope chart
 const gyroChart = new Chart("gyroChart", {
     type: "line",
     data: {
@@ -37,7 +26,7 @@ const gyroChart = new Chart("gyroChart", {
             // Change options for ALL axes of THIS CHART
             streaming: {
                 duration: 2000,
-                delay: 40,
+                delay: 10,
             }
         },
         scales: {
@@ -55,6 +44,7 @@ const gyroChart = new Chart("gyroChart", {
     }
 });
 
+/// Add new data to gyroscope chart
 function addToGyroChart(pitch, speed) {
     /*chart.data.datasets[0].data.push({
         x: Date.now(),
@@ -70,7 +60,7 @@ function addToGyroChart(pitch, speed) {
 
 
 
-
+/// Setup PID chart
 const PIDChart = new Chart("PIDChart", {
     type: "line",
     data: {
@@ -112,7 +102,7 @@ const PIDChart = new Chart("PIDChart", {
             // Change options for ALL axes of THIS CHART
             streaming: {
                 duration: 2000,
-                delay: 40,
+                delay: 10,
             }
         },
         scales: {
@@ -123,34 +113,31 @@ const PIDChart = new Chart("PIDChart", {
                 }
             },
             y: {
-                min: -1000,
-                max: 1000,
+                min: -1100,
+                max: 1100,
             }
         }
     }
 });
 
+/// Add new data to PID chart
 function addToPIDChart(P, I, D, PID) {
-    /*chart.data.datasets[0].data.push({
+    PIDChart.data.datasets[0].data.push({
         x: Date.now(),
-        y: speed * 50,
-    });*/
-    PIDChart.data.datasets[3].data.push({
-        x: Date.now(),
-        y: PID,
-    });
-    PIDChart.data.datasets[2].data.push({
-        x: Date.now(),
-        y: D,
+        y: P,
     });
     PIDChart.data.datasets[1].data.push({
         x: Date.now(),
         y: I,
     });
-    PIDChart.data.datasets[0].data.push({
+    PIDChart.data.datasets[2].data.push({
         x: Date.now(),
-        y: P,
+        y: D,
     });
+    PIDChart.data.datasets[3].data.push({
+        x: Date.now(),
+        y: PID,
+    });           
 
     PIDChart.update('quiet');
 }

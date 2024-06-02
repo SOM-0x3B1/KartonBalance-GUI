@@ -4,6 +4,7 @@ var motorEnabled = true;
 const gyroButton = document.getElementById("toggleGyro");
 const motorButton = document.getElementById("toggleMotor");
 
+/// Toggle gyro data stream
 gyroButton.onclick = () => {
     gyroEnabled = !gyroEnabled;
     socket.emit("setEG", gyroEnabled ? 1 : 0);
@@ -12,6 +13,7 @@ gyroButton.onclick = () => {
     else
         gyroButton.style.color = 'red';
 }
+/// Toggle motor data stream
 motorButton.onclick = () => {
     motorEnabled = !motorEnabled;
     socket.emit("setEM", motorEnabled ? 1 : 0);
@@ -31,7 +33,7 @@ const valueI = document.getElementById("valueI");
 const sliderD = document.getElementById("sliderD");
 const valueD = document.getElementById("valueD");
 
-const sliderA = document.getElementById("sliderA");
+const sliderA = document.getElementById("sliderA"); // target angle
 const valueA = document.getElementById("valueA");
 
 
@@ -48,6 +50,7 @@ sliderA.oninput = function() {
     valueA.innerHTML = this.value / 10;    
 }
 
+/// Send slider values
 const getGyroInterval = setInterval(async () => {
     socket.emit("setP", sliderP.value);
     await sleep(20);
@@ -55,7 +58,7 @@ const getGyroInterval = setInterval(async () => {
     await sleep(20);
     socket.emit("setD", sliderD.value);
     await sleep(20);
-    socket.emit("setA", sliderA.value);
+    socket.emit("setA", sliderA.value);  // send target angle
 }, 120);
 
 

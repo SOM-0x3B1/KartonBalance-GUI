@@ -1,9 +1,7 @@
 
 const http = require('http');
-const { urlencoded } = require('express');
 const express = require('express');
 const { join } = require('path');
-const fs = require('fs');
 
 const { Server } = require('socket.io');
 const { SerialPort } = require('serialport')
@@ -13,10 +11,6 @@ const { ReadlineParser } = require('@serialport/parser-readline')
 
 const app = express();
 
-app.disable('x-powered-by')
-
-app.set('trust proxy', 1);
-app.use(urlencoded({ extended: true, limit: '3mb' }));
 app.use(express.static('public'))
 
 
@@ -30,6 +24,7 @@ server.listen(80, () => { });
 
 var port;
 
+// Select mode and port by process arguments
 if (process.argv[2] == "USB") {
     console.log("Using USB communication");
     port = new SerialPort({
@@ -50,7 +45,9 @@ if (process.argv[2] == "USB") {
     });
 }
 
+// Set delimiter
 const parser = port.pipe(new ReadlineParser({ delimiter: '\n\r' }))
+
 
 
 let gPitch, gRoll;
@@ -60,28 +57,30 @@ let P, I, D, PID;
 const io = new Server(server);
 
 io.on('connection', (socket) => {
+
+    /// Data received
     parser.on('data', (data) => {
         const line = data.toString().split(' ');
         console.log(line);
-        if (line[0] == 'GA') {
-            //console.log(line[1]);
+        if (line[0] == 'GA') { // Gyroscope Angle
             gPitch = parseInt(line[1]) / 100;
             gRoll = parseInt(line[2]) / 100;
         }
-        else if (line[0] == 'MS') {
+        else if (line[0] == 'MS') { // Motor Speed
             speedL = parseInt(line[1]) * 0.00392;
             speedR = parseInt(line[2]) * 0.00392;
         }
-        else if (line[0] == 'PR') {
+        else if (line[0] == 'PR') { // PID Result
             P = parseInt(line[1]) / 10;
             I = parseInt(line[2]) / 10;
             D = parseInt(line[3]) / 10;
             PID = parseInt(line[4]) / 10;
         }
-        //console.log(`Roll: ${gRoll}° \nPitch: ${gPitch}° \nSpeed left: ${speedL} \nSpeed right: ${speedR}`);	
-        socket.emit('sendData', { pitch: gPitch, roll: gRoll, sl: speedL, sr: speedR, P: P, I: I, D: D, PID: PID });
+        socket.emit('sendData', { pitch: gPitch, roll: gRoll, sl: speedL, sr: speedR, P: P, I: I, D: D, PID: PID }); // send data to client
     });
 
+
+    /// Send data from client to the robot
     socket.on('setP', (data) => {
         port.write(`SP${data}\r`, (err) => {
             if (err)

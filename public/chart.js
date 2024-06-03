@@ -1,5 +1,6 @@
 Chart.defaults.borderColor = '#646464';
 Chart.defaults.color = 'white';
+Chart.defaults.elements.point.radius = 0;
 
 /// Setup gyroscope chart
 const gyroChart = new Chart("gyroChart", {
@@ -17,7 +18,6 @@ const gyroChart = new Chart("gyroChart", {
                 label: "Pitch",
                 backgroundColor: "rgba(54, 162, 235, 0.5)",
                 borderColor: "rgb(54, 162, 235)",
-                cubicInterpolationMode: "monotone",
                 data: []
             }
         ]
@@ -25,11 +25,14 @@ const gyroChart = new Chart("gyroChart", {
     options: {
         responsive: true,
         maintainAspectRatio: false,
+        spanGaps: true,
+        animation: false,
         plugins: {
             // Change options for ALL axes of THIS CHART
             streaming: {
                 duration: 2000,
-                delay: 10,
+                delay: 40,
+                frameRate: 30,
             }
         },
         scales: {
@@ -72,14 +75,12 @@ const PIDChart = new Chart("PIDChart", {
                 label: "P",
                 backgroundColor: "rgba(6, 188, 0, 0.5)",
                 borderColor: "rgb(6, 188, 0)",
-                cubicInterpolationMode: "monotone",
                 data: []
             },
             {                
                 label: "I",
                 backgroundColor: "rgba(226, 226, 49, 0.5)",
                 borderColor: "rgb(226, 226, 49)",
-                cubicInterpolationMode: "monotone",
                 data: []
             },
             {                
@@ -101,11 +102,14 @@ const PIDChart = new Chart("PIDChart", {
     options: {
         responsive: true,
         maintainAspectRatio: false,
+        spanGaps: true,
+        animation: false,
         plugins: {
             // Change options for ALL axes of THIS CHART
             streaming: {
                 duration: 2000,
                 delay: 10,
+                frameRate: 30,
             }
         },
         scales: {

@@ -13,6 +13,6 @@ socket.on('sendData', (data) => {
         `P:\t${data.P} \nI:\t${data.I} \nD:\t${data.D} \nPID:\t${data.PID} \n`;	
     
 
-	addToGyroChart(data.pitch, data.sr);	
+	addToGyroChart(data.pitch - sliderA.value / 10, data.sr);	
     addToPIDChart(data.P, data.I, data.D, data.PID)
 });

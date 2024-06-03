@@ -1,3 +1,6 @@
+Chart.defaults.borderColor = '#646464';
+Chart.defaults.color = 'white';
+
 /// Setup gyroscope chart
 const gyroChart = new Chart("gyroChart", {
     type: "line",

@@ -9,7 +9,7 @@ socket.on('sendData', (data) => {
 		gyroModel.scene.rotation.x = pitch;
 		gyroModel.scene.rotation.z = roll;
 	}
-	stats.innerText = `Pitch:\t${data.pitch}° \nRoll:\t${data.roll}° \nSpeed left:\t${data.sr} m/s \nSpeed right:\t${data.sr} m/s` +
+	stats.innerText = `Pitch:\t${data.pitch}° \nRoll:\t${data.roll}° \nSpeed left:\t${data.sr} m/s \nSpeed right:\t${data.sr} m/s \n` +
         `P:\t${data.P} \nI:\t${data.I} \nD:\t${data.D} \nPID:\t${data.PID} \n`;	
     
 

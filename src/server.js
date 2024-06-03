@@ -11,12 +11,7 @@ const { ReadlineParser } = require('@serialport/parser-readline')
 
 const app = express();
 
-app.use(express.static('public'))
-
-
-app.get('/', (_, res) => {
-    res.sendFile(join(__dirname, 'public/index.html'));
-});
+app.use(express.static('src/public'))
 
 const server = http.createServer(app)
 server.listen(80, () => { });

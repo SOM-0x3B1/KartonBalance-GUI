@@ -11,6 +11,15 @@ body {
 }
 
 
+#logs{
+    color: white;
+    position: fixed;
+    top: calc(30vh + 6em);
+    right: 3em;
+    width: 12em;
+}
+
+
 #gyroChartContainer{
     position: fixed;
     top: 3em;

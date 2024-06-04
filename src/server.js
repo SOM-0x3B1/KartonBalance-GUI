@@ -55,23 +55,29 @@ io.on('connection', (socket) => {
 
     /// Data received
     parser.on('data', (data) => {
-        const line = data.toString().split(' ');
-        console.log(line);
-        if (line[0] == 'GA') { // Gyroscope Angle
-            gPitch = parseInt(line[1]) / 100;
-            gRoll = parseInt(line[2]) / 100;
+        const line = data.toString();
+        const parameters = data.toString().split(' ');
+        console.log(parameters);
+        if (parameters[0] == 'GA') { // Gyroscope Angle
+            gPitch = parseInt(parameters[1]) / 100;
+            gRoll = parseInt(parameters[2]) / 100;
+            socket.emit('sendGyro', {pitch: gPitch, roll: gRoll});
         }
-        else if (line[0] == 'MS') { // Motor Speed
-            speedL = parseInt(line[1]) * 0.00392;
-            speedR = parseInt(line[2]) * 0.00392;
+        else if (parameters[0] == 'MS') { // Motor Speed
+            speedL = parseInt(parameters[1]) * 0.00392 * 5;
+            speedR = parseInt(parameters[2]) * 0.00392 * 5;
+            socket.emit('sendSpeed', {sl: speedL, sr: speedR});
         }
-        else if (line[0] == 'PR') { // PID Result
-            P = parseInt(line[1]) / 10;
-            I = parseInt(line[2]) / 10;
-            D = parseInt(line[3]) / 10;
-            PID = parseInt(line[4]) / 10;
-        }
-        socket.emit('sendData', { pitch: gPitch, roll: gRoll, sl: speedL, sr: speedR, P: P, I: I, D: D, PID: PID }); // send data to client
+        else if (parameters[0] == 'PR') { // PID Result
+            P = parseInt(parameters[1]) / 10;
+            I = parseInt(parameters[2]) / 10;
+            D = parseInt(parameters[3]) / 10;
+            PID = parseInt(parameters[4]) / 10;
+            socket.emit('sendPID', {P: P, I: I, D: D, PID: PID});
+        } else
+            socket.emit('sendLog', {line: line});
+        
+        //socket.emit('sendData', { pitch: gPitch, roll: gRoll, sl: speedL, sr: speedR, P: P, I: I, D: D, PID: PID }); // send data to client
     });
 
 

@@ -50,15 +50,28 @@ sliderA.oninput = function() {
     valueA.innerHTML = this.value / 10;    
 }
 
+let lastSliderP = undefined;
+let lastSliderI = undefined;
+let lastSliderD = undefined;
+
 /// Send slider values
 const getGyroInterval = setInterval(async () => {
-    socket.emit("setP", sliderP.value);
+    if(lastSliderP != sliderP.value){
+        socket.emit("setP", sliderP.value);
+        lastSliderP = sliderP.value;
+    }
     await sleep(20);
-    socket.emit("setI", sliderI.value);
+    if(lastSliderI != sliderI.value){
+        socket.emit("setI", sliderI.value);
+        lastSliderI = sliderI.value;
+    }
     await sleep(20);
-    socket.emit("setD", sliderD.value);
-    await sleep(20);
-    socket.emit("setA", sliderA.value);  // send target angle
+    if(lastSliderD != sliderD.value){
+        socket.emit("setD", sliderD.value);
+        lastSliderD = sliderD.value;
+    }
+    /*await sleep(20);
+    socket.emit("setA", sliderA.value);  // send target angle*/
 }, 120);
 
 

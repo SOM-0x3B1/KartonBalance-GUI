@@ -22,14 +22,21 @@ body {
 
 #gyroChartContainer{
     position: fixed;
-    top: 3em;
+    top: 1em;
     width: 30vw;
     height: 30vh;
 }
 
 #PIDChartContainer{
     position: fixed;
-    top: calc(30vh + 6em);
+    top: calc(30vh + 1em);
+    width: 30vw;
+    height: 30vh;
+}
+
+#speedChartContainer{
+    position: fixed;
+    top: calc(60vh + 1em);
     width: 30vw;
     height: 30vh;
 }

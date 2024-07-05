@@ -51,7 +51,7 @@ const gyroChart = new Chart("gyroChart", {
 });
 
 /// Add new data to gyroscope chart
-function addToGyroChart(pitch, speed) {
+function addToGyroChart(pitch) {
     /*chart.data.datasets[0].data.push({
         x: Date.now(),
         y: speed * 50,
@@ -147,4 +147,66 @@ function addToPIDChart(P, I, D, PID) {
     });           
 
     PIDChart.update('quiet');
+}
+
+
+
+const speedChart = new Chart("speedChart", {
+    type: "line",
+    data: {
+        datasets: [
+            /*{
+                label: "Speed",
+                backgroundColor: "rgba(255, 99, 132, 0.5)",
+                borderColor: "rgb(255, 99, 132)",
+                cubicInterpolationMode: "monotone",
+                data: []
+            },*/
+            {                
+                label: "Speed",
+                backgroundColor: "rgba(180, 0, 0, 0.5)",
+                borderColor: "rgb(180, 0, 0)",
+                data: []
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        spanGaps: true,
+        animation: false,
+        plugins: {
+            // Change options for ALL axes of THIS CHART
+            streaming: {
+                duration: 2000,
+                delay: 40,
+                frameRate: 30,
+            }
+        },
+        scales: {
+            x: {
+                type: 'realtime',
+                realtime: {
+                    duration: 2000
+                }
+            },
+            y: {
+                min: -0.1,
+                max: 0.1,
+            }
+        }
+    }
+});
+
+function addToSpeedChart(speed) {
+    /*chart.data.datasets[0].data.push({
+        x: Date.now(),
+        y: speed * 50,
+    });*/
+    speedChart.data.datasets[0].data.push({
+        x: Date.now(),
+        y: speed,
+    });
+
+    speedChart.update('quiet');
 }

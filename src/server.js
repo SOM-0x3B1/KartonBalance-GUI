@@ -64,8 +64,8 @@ io.on('connection', (socket) => {
             socket.emit('sendGyro', {pitch: gPitch, roll: gRoll});
         }
         else if (parameters[0] == 'MS') { // Motor Speed
-            speedL = parseInt(parameters[1]) * 0.00392 * 5;
-            speedR = parseInt(parameters[2]) * 0.00392 * 5;
+            speedL = parseInt(parameters[1]) / 10000;
+            speedR = parseInt(parameters[2]) / 10000;
             socket.emit('sendSpeed', {sl: speedL, sr: speedR});
         }
         else if (parameters[0] == 'PR') { // PID Result
@@ -103,7 +103,7 @@ io.on('connection', (socket) => {
         });
         port.drain();
     })
-    socket.on('setA', (data) => {
+    /*socket.on('setA', (data) => {
         const value = Math.round(data);
         //console.log(value);
         port.write(`SA${value}\r`, (err) => {
@@ -111,7 +111,7 @@ io.on('connection', (socket) => {
                 console.log("write error");
         });
         port.drain();
-    })
+    })*/
 
     socket.on('setEG', (data) => {
         const value = data;

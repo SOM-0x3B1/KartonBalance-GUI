@@ -96,13 +96,13 @@ body {
 /* The slider itself */
 .slider {
     top: -1ex;
-    right: 5ex;
+    right: 4em;
     position: absolute;
 
     -webkit-appearance: none;
     /* Override default CSS styles */
     appearance: none;
-    width: calc(100% - 5em);
+    width: calc(100% - 6em);
     /* Full-width */
     height: 25px;
     /* Specified height */

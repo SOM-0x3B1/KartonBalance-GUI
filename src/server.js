@@ -45,7 +45,7 @@ const parser = port.pipe(new ReadlineParser({ delimiter: '\n\r' }))
 
 
 
-let gPitch, gRoll;
+let gPitch, gRoll, targetAngle;
 let speedL, speedR;
 let P, I, D, PID;
 
@@ -61,7 +61,8 @@ io.on('connection', (socket) => {
         if (parameters[0] == 'GA') { // Gyroscope Angle
             gPitch = parseInt(parameters[1]) / 100;
             gRoll = parseInt(parameters[2]) / 100;
-            socket.emit('sendGyro', {pitch: gPitch, roll: gRoll});
+            targetAngle = parseInt(parameters[3]) / 100;
+            socket.emit('sendGyro', {pitch: gPitch, roll: gRoll, targetAngle: targetAngle});
         }
         else if (parameters[0] == 'MS') { // Motor Speed
             speedL = parseInt(parameters[1]) / 10000;
@@ -103,17 +104,17 @@ io.on('connection', (socket) => {
         });
         port.drain();
     })
-    /*socket.on('setA', (data) => {
+    socket.on('setTau', (data) => {
         const value = Math.round(data);
         //console.log(value);
-        port.write(`SA${value}\r`, (err) => {
+        port.write(`ST${value}\r`, (err) => {
             if (err)
                 console.log("write error");
         });
         port.drain();
-    })*/
+    })
 
-    socket.on('setEG', (data) => {
+    socket.on('enG', (data) => {
         const value = data;
         console.log('Gyro: ' + value);
         port.write(`EG${value}\r`, (err) => {
@@ -122,7 +123,7 @@ io.on('connection', (socket) => {
         });
         port.drain();
     })
-    socket.on('setEM', (data) => {
+    socket.on('enM', (data) => {
         const value = data;
         console.log('Motor: ' + value);
         port.write(`EM${value}\r`, (err) => {
@@ -131,7 +132,7 @@ io.on('connection', (socket) => {
         });
         port.drain();
     })
-    socket.on('setEP', (data) => {
+    socket.on('enPID', (data) => {
         const value = data;
         console.log('PID: ' + value);
         port.write(`EP${value}\r`, (err) => {

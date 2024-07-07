@@ -6,18 +6,17 @@ Chart.defaults.elements.point.radius = 0;
 const gyroChart = new Chart("gyroChart", {
     type: "line",
     data: {
-        datasets: [
-            /*{
-                label: "Speed",
-                backgroundColor: "rgba(255, 99, 132, 0.5)",
-                borderColor: "rgb(255, 99, 132)",
-                cubicInterpolationMode: "monotone",
-                data: []
-            },*/
+        datasets: [            
             {                
                 label: "Pitch",
                 backgroundColor: "rgba(54, 162, 235, 0.5)",
                 borderColor: "rgb(54, 162, 235)",
+                data: []
+            },
+            {
+                label: "Target",
+                backgroundColor: "rgba(100, 0, 100, 0.5)",
+                borderColor: "rgb(100, 0, 100)",
                 data: []
             }
         ]
@@ -51,7 +50,7 @@ const gyroChart = new Chart("gyroChart", {
 });
 
 /// Add new data to gyroscope chart
-function addToGyroChart(pitch) {
+function addToGyroChart(pitch, targetAngle) {
     /*chart.data.datasets[0].data.push({
         x: Date.now(),
         y: speed * 50,
@@ -59,6 +58,11 @@ function addToGyroChart(pitch) {
     gyroChart.data.datasets[0].data.push({
         x: Date.now(),
         y: pitch,
+    });
+
+    gyroChart.data.datasets[1].data.push({
+        x: Date.now(),
+        y: targetAngle,
     });
 
     gyroChart.update('quiet');
@@ -191,8 +195,8 @@ const speedChart = new Chart("speedChart", {
                 }
             },
             y: {
-                min: -0.1,
-                max: 0.1,
+                min: -0.3,
+                max: 0.3,
             }
         }
     }

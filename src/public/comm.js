@@ -11,7 +11,7 @@ socket.on('sendGyro', (data) => {
 		gyroModel.scene.rotation.x = pitch;
 		gyroModel.scene.rotation.z = roll;
 	}
-	addToGyroChart(data.pitch - sliderA.value / 10, data.sr);	
+	addToGyroChart(data.pitch, data.targetAngle);	
 });
 
 socket.on('sendPID', (data) => {

@@ -113,6 +113,14 @@ io.on('connection', (socket) => {
         });
         port.drain();
     })
+    socket.on('setV', (data) => {
+        //console.log(data);
+        port.write(`SV${data}\r`, (err) => {
+            if (err)
+                console.log("write error");
+        });
+        port.drain();
+    })
 
     socket.on('enG', (data) => {
         const value = data;

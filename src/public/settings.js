@@ -45,8 +45,11 @@ const valueI = document.getElementById("valueI");
 const sliderD = document.getElementById("sliderD");
 const valueD = document.getElementById("valueD");
 
-const sliderTau = document.getElementById("sliderTau"); // target angle
+const sliderTau = document.getElementById("sliderTau");
 const valueTau = document.getElementById("valueTau");
+
+const sliderV = document.getElementById("sliderV");
+const valueV = document.getElementById("valueV");
 
 
 sliderP.oninput = function() {
@@ -62,10 +65,15 @@ sliderTau.oninput = function() {
     valueTau.innerHTML = this.value / 10000;    
 }
 
+sliderV.oninput = function() {
+    valueV.innerHTML = this.value;    
+}
+
 let lastSliderP = undefined;
 let lastSliderI = undefined;
 let lastSliderD = undefined;
 let lastSliderTau = undefined;
+let lastSliderV = undefined;
 
 /// Send slider values
 const getGyroInterval = setInterval(async () => {
@@ -88,7 +96,13 @@ const getGyroInterval = setInterval(async () => {
         socket.emit("setTau", sliderTau.value);
         //lastSliderTau = sliderTau.value;
     }
-}, 120);
+    await sleep(30);
+    if(lastSliderTau != sliderTau.value){
+        //console.log(sliderV.value);
+        socket.emit("setV", sliderV.value);
+        //lastSliderTau = sliderTau.value;
+    }
+}, 150);
 
 
 function sleep(ms) {
